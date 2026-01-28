@@ -1,243 +1,854 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-
+<html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Test Series - BPSC Preparation</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lumière Beauty Parlor - Luxury Beauty & Wellness</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-  <!-- Font Awesome Icons -->
-  <link rel="stylesheet" th:href="@{/css/fontawesome/css/all.min.css}">
- 
+        :root {
+            --primary: #D4A574;
+            --primary-dark: #B8865F;
+            --accent: #E8D5C4;
+            --dark: #2C2826;
+            --light: #FAF8F5;
+            --text: #4A4542;
+            --rose: #E8C4BC;
+        }
 
-  <!-- SweetAlert2 -->   
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            color: var(--text);
+            background: var(--light);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
 
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 400;
+        }
 
-  <!-- <link th:href="@{/import/sweetalert/sweetalert2.min.css}" rel="stylesheet">
-  <script th:src="@{/import/sweetalert/sweetalert2.min.js}"></script> -->
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(250, 248, 245, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 1.5rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+        }
 
-  <!-- amCharts -->
-  <script src="https://cdn.amcharts.com/lib/5/index.js"></script>
-  <script src="https://cdn.amcharts.com/lib/5/xy.js"></script>
-  <script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
+        nav.scrolled {
+            padding: 1rem 5%;
+            background: rgba(250, 248, 245, 0.98);
+        }
 
-  <!-- Custom CSS & JS -->
-  <link rel="stylesheet" th:href="@{/css/index.css}" />
-  <link rel="stylesheet" th:href="@{/css/master/testSeries.css}" />
-  <script th:src="@{/js/master/testSeries.js}"></script>
+        .logo {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2rem;
+            font-weight: 600;
+            color: var(--primary);
+            letter-spacing: 2px;
+        }
 
-  <style>
-    /* Loading Spinner */
-    .loading-spinner {
-      border: 4px solid rgba(255, 255, 255, 0.3);
-      border-radius: 50%;
-      border-top: 4px solid #3b82f6;
-      width: 50px;
-      height: 50px;
-      animation: spin 1s linear infinite;
-      margin: 0 auto;
-    }
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+        }
 
-    @keyframes spin {
-      0% {
-        transform: rotate(0deg);
-      }
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark);
+            font-size: 0.95rem;
+            font-weight: 400;
+            letter-spacing: 1px;
+            transition: color 0.3s;
+            position: relative;
+        }
 
-      100% {
-        transform: rotate(360deg);
-      }
-    }
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: var(--primary);
+            transition: width 0.3s;
+        }
 
-    /* Hide sections initially */
-    .hidden {
-      display: none !important;
-    }
-  </style>
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .mobile-menu {
+            display: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--dark);
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--accent) 0%, var(--rose) 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" opacity="0.05"><circle cx="200" cy="150" r="100" fill="%23D4A574"/><circle cx="800" cy="600" r="150" fill="%23D4A574"/><circle cx="1000" cy="200" r="80" fill="%23D4A574"/><circle cx="400" cy="700" r="120" fill="%23D4A574"/></svg>');
+            background-size: cover;
+        }
+
+        .hero-content {
+            text-align: center;
+            z-index: 1;
+            animation: fadeInUp 1s ease;
+        }
+
+        .hero h1 {
+            font-size: clamp(3rem, 8vw, 6rem);
+            color: var(--dark);
+            margin-bottom: 1rem;
+            font-weight: 300;
+            letter-spacing: 3px;
+        }
+
+        .hero p {
+            font-size: clamp(1rem, 2vw, 1.3rem);
+            color: var(--text);
+            margin-bottom: 2.5rem;
+            letter-spacing: 2px;
+            font-weight: 300;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 1rem 3rem;
+            background: var(--primary);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            letter-spacing: 2px;
+            transition: all 0.3s;
+            box-shadow: 0 10px 30px rgba(212, 165, 116, 0.3);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(212, 165, 116, 0.4);
+            background: var(--primary-dark);
+        }
+
+        /* Section Styling */
+        section {
+            padding: 5rem 5%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-title h2 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            color: var(--dark);
+            margin-bottom: 1rem;
+            font-weight: 300;
+            letter-spacing: 2px;
+        }
+
+        .section-title p {
+            color: var(--text);
+            font-size: 1.1rem;
+            letter-spacing: 1px;
+        }
+
+        /* Services Grid */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2.5rem;
+        }
+
+        .service-card {
+            background: white;
+            padding: 3rem 2rem;
+            border-radius: 20px;
+            text-align: center;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--rose));
+            transform: scaleX(0);
+            transition: transform 0.4s;
+        }
+
+        .service-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+
+        .service-icon {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .service-card h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            color: var(--dark);
+        }
+
+        .service-card p {
+            color: var(--text);
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+        }
+
+        .service-price {
+            font-size: 1.3rem;
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        /* Gallery */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .gallery-item {
+            position: relative;
+            height: 350px;
+            border-radius: 20px;
+            overflow: hidden;
+            cursor: pointer;
+            background: linear-gradient(135deg, var(--accent), var(--rose));
+            transition: transform 0.4s;
+        }
+
+        .gallery-item:hover {
+            transform: scale(1.05);
+        }
+
+        .gallery-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(212, 165, 116, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .gallery-item:hover .gallery-overlay {
+            opacity: 1;
+        }
+
+        .gallery-overlay h4 {
+            color: white;
+            font-size: 2rem;
+            letter-spacing: 2px;
+        }
+
+        /* Testimonials */
+        .testimonials-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .testimonial {
+            background: white;
+            padding: 3rem;
+            border-radius: 20px;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            opacity: 0;
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        .testimonial:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .testimonial:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        .stars {
+            color: var(--primary);
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+        }
+
+        .testimonial-text {
+            font-size: 1.1rem;
+            font-style: italic;
+            color: var(--text);
+            margin-bottom: 1.5rem;
+            line-height: 1.8;
+        }
+
+        .testimonial-author {
+            font-weight: 600;
+            color: var(--dark);
+            font-size: 1rem;
+            letter-spacing: 1px;
+        }
+
+        /* Contact Section */
+        .contact-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .contact-info h3 {
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            color: var(--dark);
+        }
+
+        .info-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            gap: 1rem;
+        }
+
+        .info-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+        }
+
+        .contact-form {
+            background: white;
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+            font-weight: 500;
+            letter-spacing: 1px;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid var(--accent);
+            border-radius: 10px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1rem;
+            transition: border 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 150px;
+        }
+
+        .submit-button {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .submit-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(212, 165, 116, 0.4);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--dark);
+            color: var(--light);
+            padding: 3rem 5%;
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h4 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        .footer-section p,
+        .footer-section a {
+            color: var(--light);
+            text-decoration: none;
+            display: block;
+            margin-bottom: 0.5rem;
+            transition: color 0.3s;
+        }
+
+        .footer-section a:hover {
+            color: var(--primary);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 1rem;
+        }
+
+        .social-links a {
+            width: 40px;
+            height: 40px;
+            background: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+
+        .social-links a:hover {
+            transform: translateY(-3px);
+            background: var(--primary-dark);
+        }
+
+        .copyright {
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding-top: 2rem;
+            margin-top: 2rem;
+            color: var(--accent);
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                height: 100vh;
+                width: 70%;
+                background: var(--light);
+                flex-direction: column;
+                padding: 5rem 2rem;
+                box-shadow: -5px 0 20px rgba(0,0,0,0.1);
+                transition: right 0.3s;
+            }
+
+            .nav-links.active {
+                right: 0;
+            }
+
+            .mobile-menu {
+                display: block;
+            }
+
+            .contact-container {
+                grid-template-columns: 1fr;
+            }
+
+            .hero h1 {
+                font-size: 3rem;
+            }
+        }
+    </style>
 </head>
-
 <body>
-  <!-- Header Navigation -->
-  <div th:replace="fragments/header :: mainHeader"></div>
 
-  <!-- Main Container -->
-  <div class="main-container">
+    <!-- Navigation -->
+    <nav id="navbar">
+        <div class="logo">Lumière</div>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#services">Services</a></li>
+            <li><a href="#gallery">Gallery</a></li>
+            <li><a href="#testimonials">Testimonials</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+        <div class="mobile-menu" id="mobileMenu">☰</div>
+    </nav>
 
-    <!-- ==================== SUBJECT SELECTION SECTION ==================== -->
-    <section id="subjectSection">
-      <div class="section-header">
-        <h2><i class="fas fa-book"></i> Select Your Subject</h2>
-        <p>Choose a subject to begin your test preparation journey</p>
-      </div>
-
-      <div class="subjects-container">
-        <th:block th:each="subject : ${subjects}">
-          <div class="subject-item" th:id="${subject.id}" onclick="openTree(this)">
-            <i class="fas fa-graduation-cap"
-              style="display: block; font-size: 48px; margin-bottom: 12px; opacity: 0.8;"></i>
-            <span th:text="${subject.subjectName}">Subject Name</span>
-          </div>
-        </th:block>
-      </div>
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h1>Lumière Beauty</h1>
+            <p>Where Elegance Meets Excellence</p>
+            <a href="#contact" class="cta-button">BOOK APPOINTMENT</a>
+        </div>
     </section>
 
-    <!-- ==================== SUBJECT TYPE TREE SECTION ==================== -->
-    <div class="tree-area" id="treeArea">
-      <div class="subjectcat">
-        <h2><i class="fas fa-sitemap"></i> Subject Categories</h2>
-        <p>Select the type of preparation material</p>
-      </div>
-
-      <div class="tree-parent" id="treeParentName">
-        <i class="fas fa-folder-open"></i> Subject
-      </div>
-
-      <div class="child-boxes" id="typeContainer">
-        <!-- Types will be injected here -->
-      </div>
-    </div>
-
-    <!-- ==================== CHAPTER SECTION ==================== -->
-    <div class="chapter-question-container" id="chapterArea" style="display: none">
-
-      <!-- Chapters -->
-      <div class="chapter-left">
-        <div class="chapter-title" id="selectedTypeName">
-          <i class="fas fa-list-ul"></i> Chapters
+    <!-- Services Section -->
+    <section id="services">
+        <div class="section-title">
+            <h2>Our Services</h2>
+            <p>Indulge in luxury treatments tailored just for you</p>
         </div>
-
-        <div class="chapter-list" id="chapterContainer">
-          <!-- Chapters will be injected here -->
+        <div class="services-grid">
+            <div class="service-card">
+                <div class="service-icon">✨</div>
+                <h3>Facial Treatment</h3>
+                <p>Rejuvenate your skin with our signature facial treatments using premium organic products.</p>
+                <div class="service-price">From $80</div>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">💇</div>
+                <h3>Hair Styling</h3>
+                <p>Expert styling, coloring, and treatments to bring out your hair's natural beauty.</p>
+                <div class="service-price">From $60</div>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">💅</div>
+                <h3>Manicure & Pedicure</h3>
+                <p>Pamper your hands and feet with our luxurious nail care services.</p>
+                <div class="service-price">From $45</div>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">💆</div>
+                <h3>Spa & Massage</h3>
+                <p>Relax and unwind with our therapeutic massage and spa treatments.</p>
+                <div class="service-price">From $90</div>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">💄</div>
+                <h3>Makeup Artistry</h3>
+                <p>Professional makeup for weddings, events, and special occasions.</p>
+                <div class="service-price">From $120</div>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">🧖</div>
+                <h3>Body Treatment</h3>
+                <p>Full body care including waxing, scrubs, and rejuvenating treatments.</p>
+                <div class="service-price">From $70</div>
+            </div>
         </div>
-      </div>
-
-      <!-- Tests Dashboard -->
-      <div class="question-area" style="display: none" id="questionArea">
-        <div style="text-align: center; padding: 60px 20px; color: var(--gray-600);">
-          <i class="fas fa-hand-pointer" style="font-size: 64px; margin-bottom: 20px; opacity: 0.3;"></i>
-          <h3>कृपया अध्याय चुनें</h3>
-          <p>Please select a chapter from above</p>
-        </div>
-      </div>
-
-    </div>
-
-    <!-- ==================== RESULT SECTION ==================== -->
-    <section id="resultSection" style="display: none;">
-      <div class="section-header">
-        <h2><i class="fas fa-trophy"></i> Test Results</h2>
-        <p>Here's how you performed</p>
-      </div>
-
-      <div
-        style="background: white; border-radius: var(--radius-lg); padding: 48px 32px; box-shadow: var(--shadow-xl);">
-
-        <!-- Chart Container -->
-        <div id="chartdiv" style="width: 100%; max-width: 900px; height: 500px; margin: 0 auto 40px;"></div>
-
-        <!-- Performance Summary -->
-        <div
-          style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 40px; max-width: 900px; margin-left: auto; margin-right: auto;">
-
-          <div
-            style="background: linear-gradient(135deg, #dcfce7, #bbf7d0); padding: 24px; border-radius: 12px; text-align: center;">
-            <i class="fas fa-check-circle" style="font-size: 36px; color: var(--success); margin-bottom: 8px;"></i>
-            <div style="font-size: 32px; font-weight: 800; color: var(--success);" id="correctCount">0</div>
-            <div style="font-size: 14px; color: var(--gray-700); font-weight: 600;">Correct</div>
-          </div>
-
-          <div
-            style="background: linear-gradient(135deg, #fee2e2, #fecaca); padding: 24px; border-radius: 12px; text-align: center;">
-            <i class="fas fa-times-circle" style="font-size: 36px; color: var(--danger); margin-bottom: 8px;"></i>
-            <div style="font-size: 32px; font-weight: 800; color: var(--danger);" id="wrongCount">0</div>
-            <div style="font-size: 14px; color: var(--gray-700); font-weight: 600;">Wrong</div>
-          </div>
-
-          <div
-            style="background: linear-gradient(135deg, #fef3c7, #fde68a); padding: 24px; border-radius: 12px; text-align: center;">
-            <i class="fas fa-forward" style="font-size: 36px; color: var(--warning); margin-bottom: 8px;"></i>
-            <div style="font-size: 32px; font-weight: 800; color: var(--warning);" id="skippedCount">0</div>
-            <div style="font-size: 14px; color: var(--gray-700); font-weight: 600;">Skipped</div>
-          </div>
-
-        </div>
-
-        <!-- Action Buttons -->
-        <div class="question-actions"
-          style="margin-top: 40px; display: flex; justify-content: center; gap: 16px; flex-wrap: wrap;">
-          <button class="btn-prev" onclick="restartTest()"
-            style="background: linear-gradient(135deg, var(--gray-600), var(--gray-800)); color: white; border: none; padding: 14px 32px; border-radius: 50px; font-weight: 700; cursor: pointer; transition: all 0.3s ease;">
-            <i class="fas fa-redo"></i> Restart Test
-          </button>
-
-          <button class="btn-submit" onclick="viewSolution()"
-            style="background: linear-gradient(135deg, var(--success), #16a34a); color: white; border: none; padding: 14px 32px; border-radius: 50px; font-weight: 700; cursor: pointer; transition: all 0.3s ease;">
-            <i class="fas fa-book-open"></i> View Solutions
-          </button>
-
-          <button class="start-btn" onclick="goToNextChapter()"
-            style="padding: 14px 32px; border-radius: 50px; font-weight: 700; cursor: pointer; transition: all 0.3s ease;">
-            <i class="fas fa-arrow-left"></i> Back to Chapters
-          </button>
-
-          <button class="start-btn" onclick="startNextTest()"
-            style="padding: 14px 32px; border-radius: 50px; font-weight: 700; cursor: pointer; transition: all 0.3s ease;">
-            <i class="fas fa-arrow-right"></i> Next Test
-          </button>
-        </div>
-
-      </div>
     </section>
 
-  </div>
-
-  <!-- ==================== TEST MODE CONTAINER (FULLSCREEN) ==================== -->
-  <div class="test-mode-container" id="testModeContainer">
-
-    <!-- Test Header with Timer -->
-    <div class="test-header">
-      <div class="test-header-left">
-        <div class="test-title-small">
-          <i class="fas fa-file-alt"></i> Test in Progress
+    <!-- Gallery Section -->
+    <section id="gallery">
+        <div class="section-title">
+            <h2>Our Work</h2>
+            <p>A glimpse into our artistry</p>
         </div>
-        <div class="question-counter" id="questionCounter">
-          1 / 10
+        <div class="gallery-grid">
+            <div class="gallery-item">
+                <div class="gallery-overlay">
+                    <h4>Bridal Makeup</h4>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <div class="gallery-overlay">
+                    <h4>Hair Styling</h4>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <div class="gallery-overlay">
+                    <h4>Nail Art</h4>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <div class="gallery-overlay">
+                    <h4>Spa Treatment</h4>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <div class="gallery-overlay">
+                    <h4>Facial Care</h4>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <div class="gallery-overlay">
+                    <h4>Color Treatment</h4>
+                </div>
+            </div>
         </div>
-      </div>
+    </section>
 
-      <div style="display: flex; align-items: center; gap: 14px;">
-        <!-- Pause Button -->
-        <button class="pause-toggle-btn" onclick="togglePauseTest()" id="pauseBtn"
-            title="Pause / Resume Test">
-          <i class="fas fa-pause" id="pauseIcon"></i>
-        </button>
-
-        <!-- Timer -->
-        <div class="timer-display" id="timerDisplay">
-          <i class="fas fa-clock"></i>
-          <span id="timerText">00:00</span>
+    <!-- Testimonials Section -->
+    <section id="testimonials">
+        <div class="section-title">
+            <h2>What Our Clients Say</h2>
+            <p>Real experiences from real people</p>
         </div>
-      </div>
-    </div>
+        <div class="testimonials-container">
+            <div class="testimonial">
+                <div class="stars">★★★★★</div>
+                <p class="testimonial-text">"Absolutely amazing experience! The staff is so professional and the ambiance is incredibly relaxing. My facial treatment was divine, and my skin has never looked better. Highly recommend!"</p>
+                <p class="testimonial-author">— Sarah Mitchell</p>
+            </div>
+            <div class="testimonial">
+                <div class="stars">★★★★★</div>
+                <p class="testimonial-text">"I had my bridal makeup done here and it was flawless! They listened to exactly what I wanted and made me feel like a princess on my special day. Thank you, Lumière!"</p>
+                <p class="testimonial-author">— Emily Rodriguez</p>
+            </div>
+            <div class="testimonial">
+                <div class="stars">★★★★★</div>
+                <p class="testimonial-text">"The best salon I've ever been to! The hair stylists are true artists, and the spa treatments are incredibly rejuvenating. This is my go-to place for all beauty needs."</p>
+                <p class="testimonial-author">— Jessica Chen</p>
+            </div>
+        </div>
+    </section>
 
-    <!-- Test Content -->
-    <div class="test-content">
-      <!-- Main Question Area -->
-      <div class="test-main">
-        <!-- Questions render here via JS -->
-      </div>
+    <!-- Contact Section -->
+    <section id="contact">
+        <div class="section-title">
+            <h2>Get In Touch</h2>
+            <p>Book your appointment today</p>
+        </div>
+        <div class="contact-container">
+            <div class="contact-info">
+                <h3>Visit Us</h3>
+                <div class="info-item">
+                    <div class="info-icon">📍</div>
+                    <div>
+                        <p><strong>Address</strong></p>
+                        <p>123 Beauty Boulevard<br>Los Angeles, CA 90028</p>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <div class="info-icon">📞</div>
+                    <div>
+                        <p><strong>Phone</strong></p>
+                        <p>+1 (555) 123-4567</p>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <div class="info-icon">✉️</div>
+                    <div>
+                        <p><strong>Email</strong></p>
+                        <p>info@lumierebeauty.com</p>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <div class="info-icon">🕐</div>
+                    <div>
+                        <p><strong>Hours</strong></p>
+                        <p>Mon-Sat: 9AM - 8PM<br>Sunday: 10AM - 6PM</p>
+                    </div>
+                </div>
+            </div>
+            <div class="contact-form">
+                <form id="contactForm">
+                    <div class="form-group">
+                        <label>Name</label>
+                        <input type="text" id="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" id="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Phone</label>
+                        <input type="tel" id="phone" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Message</label>
+                        <textarea id="message" required></textarea>
+                    </div>
+                    <button type="submit" class="submit-button">SEND MESSAGE</button>
+                </form>
+            </div>
+        </div>
+    </section>
 
-      <!-- Question Palette Sidebar -->
-      <div class="test-sidebar">
-        <!-- Palette renders here via JS -->
-      </div>
-    </div>
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>About Lumière</h4>
+                <p>Luxury beauty parlor dedicated to bringing out your natural radiance through exceptional service and premium treatments.</p>
+            </div>
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <a href="#services">Services</a>
+                <a href="#gallery">Gallery</a>
+                <a href="#testimonials">Testimonials</a>
+                <a href="#contact">Contact</a>
+            </div>
+            <div class="footer-section">
+                <h4>Follow Us</h4>
+                <div class="social-links">
+                    <a href="#">📘</a>
+                    <a href="#">📷</a>
+                    <a href="#">🐦</a>
+                    <a href="#">📌</a>
+                </div>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>&copy; 2024 Lumière Beauty Parlor. All rights reserved.</p>
+        </div>
+    </footer>
 
-  </div>
+    <script>
+        // Smooth Scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                    // Close mobile menu if open
+                    document.getElementById('navLinks').classList.remove('active');
+                }
+            });
+        });
 
-  <!-- Footer (Optional) -->
-  <div th:replace="~{fragments/footer :: mainFooter}"></div>
+        // Navbar scroll effect
+        window.addEventListener('scroll', () => {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Mobile menu toggle
+        document.getElementById('mobileMenu').addEventListener('click', () => {
+            document.getElementById('navLinks').classList.toggle('active');
+        });
+
+        // Form submission
+        document.getElementById('contactForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const phone = document.getElementById('phone').value;
+            const message = document.getElementById('message').value;
+
+            // Simple validation
+            if (name && email && phone && message) {
+                alert(`Thank you, ${name}! Your appointment request has been received. We'll contact you shortly at ${email}.`);
+                document.getElementById('contactForm').reset();
+            }
+        });
+
+        // Animate elements on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animation = 'fadeInUp 0.6s ease forwards';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.service-card, .gallery-item').forEach(el => {
+            el.style.opacity = '0';
+            observer.observe(el);
+        });
+    </script>
 
 </body>
-
 </html>
